@@ -1,12 +1,15 @@
-# 02 — Sales Analysis
+-- Faturamento total por pedido
+SELECT
+    id_pedido,
+    SUM(quantidade * preco_unitario) AS faturamento_pedido
+FROM itens_pedido
+GROUP BY id_pedido
+ORDER BY faturamento_pedido DESC;
 
-Análise de vendas utilizando o banco criado no projeto 01 (e-commerce), 
-com foco em faturamento por pedido e ticket médio.
-
-## Conceitos aplicados
-- GROUP BY / HAVING
-- Funções agregadas (SUM, COUNT, AVG)
-- Subquery
-
-## Arquivos
-- `queries/consultas.sql` — consultas de análise de vendas
+-- Ticket médio geral (faturamento médio por pedido)
+SELECT AVG(faturamento_pedido) AS ticket_medio
+FROM (
+    SELECT id_pedido, SUM(quantidade * preco_unitario) AS faturamento_pedido
+    FROM itens_pedido
+    GROUP BY id_pedido
+) AS sub;
